@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3faf7">
+  <meta name="description" content="AquaStudent membantu mahasiswa mencatat minum air dan menjaga hidrasi setiap hari.">
+  <title>AquaStudent | Teman Hidrasi Harian</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <nav class="navbar app-nav" aria-label="Navigasi utama">
+      <div class="container-xl d-flex justify-content-between align-items-center">
+        <a class="brand" href="#beranda" aria-label="AquaStudent, beranda">
+          <span class="brand-mark"><i class="bi bi-droplet-half" aria-hidden="true"></i></span>
+          <span>Aqua<span class="brand-light">Student</span></span>
+        </a>
+        <div class="date-chip"><i class="bi bi-calendar3" aria-hidden="true"></i><span id="todayLabel"></span></div>
+      </div>
+    </nav>
+
+    <main class="container-xl pb-5" id="beranda">
+      <header class="page-intro">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> RUANG HIDRASI HARIAN</div>
+        <h1>Jaga fokus,<br class="d-sm-none"> mulai dari <span>segelas air.</span></h1>
+        <p>Catat minummu hari ini. Sedikit demi sedikit, target harian jadi lebih dekat.</p>
+      </header>
+
+      <div class="row g-4 align-items-start">
+        <section class="col-lg-8" aria-label="Progres minum hari ini">
+          <div class="panel progress-panel">
+            <div class="panel-heading">
+              <div>
+                <div class="section-kicker">PROGRES HARI INI</div>
+                <h2>Perjalanan hidrasi</h2>
+              </div>
+              <span class="today-tag"><span></span> Hari ini</span>
+            </div>
+
+            <div class="progress-summary">
+              <div class="drink-total"><span id="totalAmount">0</span><span class="unit">ml</span></div>
+              <div class="goal-copy">dari target <strong id="targetLabel">2.000 ml</strong></div>
+              <div class="progress-percent" id="progressPercent">0%</div>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Progres target minum" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-foot"><span id="progressMessage">Ayo mulai dengan satu gelas.</span><span><strong id="remainingAmount">2.000</strong> ml lagi</span></div>
+
+            <div class="target-row">
+              <label for="targetInput"><i class="bi bi-bullseye" aria-hidden="true"></i> Target harian</label>
+              <div class="input-group target-input-group">
+                <input class="form-control" id="targetInput" type="number" min="250" max="10000" step="50" value="2000" aria-label="Target minum harian dalam mililiter">
+                <span class="input-group-text">ml</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel add-panel">
+            <div class="section-kicker">TAMBAH MINUM</div>
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+              <h2>Baru saja minum?</h2>
+              <span class="subtle-note">Pilih ukuran gelasmu</span>
+            </div>
+            <div class="quick-add-grid">
+              <button class="quick-add" type="button" data-amount="250" aria-label="Tambah 250 mililiter">
+                <span class="quick-icon"><i class="bi bi-cup" aria-hidden="true"></i></span><span class="quick-volume">+250 <small>ml</small></span><span class="quick-caption">1 gelas</span>
+              </button>
+              <button class="quick-add" type="button" data-amount="500" aria-label="Tambah 500 mililiter">
+                <span class="quick-icon"><i class="bi bi-cup-straw" aria-hidden="true"></i></span><span class="quick-volume">+500 <small>ml</small></span><span class="quick-caption">1 botol kecil</span>
+              </button>
+              <form class="custom-add" id="customAddForm">
+                <label for="customAmount">Ukuran lain</label>
+                <div class="input-group">
+                  <input class="form-control" id="customAmount" type="number" min="1" max="5000" step="1" placeholder="ml" inputmode="numeric" required aria-label="Jumlah minum dalam mililiter">
+                  <button class="btn add-button" type="submit" aria-label="Tambahkan jumlah minum"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="panel history-panel">
+            <div class="panel-heading history-heading">
+              <div><div class="section-kicker">CATATAN HARI INI</div><h2>Riwayat minum</h2></div>
+              <span class="entry-count" id="entryCount">0 catatan</span>
+            </div>
+            <ul class="history-list" id="historyList" aria-live="polite"></ul>
+            <div class="empty-history" id="emptyHistory">
+              <span class="empty-icon"><i class="bi bi-journal-plus" aria-hidden="true"></i></span>
+              <p>Belum ada catatan. Minum dulu, lalu tambahkan di sini.</p>
+            </div>
+            <div class="history-actions" id="historyActions" hidden>
+              <button class="text-button" id="resetButton" type="button"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Reset progres hari ini</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="col-lg-4" aria-label="Pengaturan pengingat">
+          <div class="panel reminder-panel">
+            <div class="reminder-topline"><span class="reminder-icon"><i class="bi bi-bell" aria-hidden="true"></i></span><span class="reminder-status" id="reminderBadge">NONAKTIF</span></div>
+            <div class="section-kicker">BIAR TIDAK TERLEWAT</div>
+            <h2>Pengingat minum</h2>
+            <p class="reminder-description">Atur jeda pengingat supaya kamu ingat minum di sela kuliah dan tugas.</p>
+
+            <label class="form-label interval-label" for="reminderInterval">Ingatkan setiap</label>
+            <select class="form-select" id="reminderInterval">
+              <option value="60">1 jam</option>
+              <option value="120">2 jam</option>
+              <option value="30">30 menit</option>
+            </select>
+
+            <button class="btn reminder-button" id="reminderToggle" type="button"><i class="bi bi-bell-fill" aria-hidden="true"></i> Aktifkan pengingat</button>
+            <p class="reminder-feedback" id="reminderFeedback" role="status" aria-live="polite">Notifikasi hanya muncul saat halaman ini terbuka.</p>
+            <div class="permission-note"><i class="bi bi-shield-check" aria-hidden="true"></i><span>Izin notifikasi browser diperlukan agar pengingat dapat muncul.</span></div>
+          </div>
+
+          <div class="tip-panel">
+            <span class="tip-mark" aria-hidden="true">A</span>
+            <div><div class="section-kicker">CATATAN KECIL</div><p>Taruh botol minum di meja belajar agar lebih mudah ingat untuk minum.</p></div>
+          </div>
+        </aside>
+      </div>
+      <footer class="app-footer"><span>AquaStudent</span><span>Jaga hidrasi, jaga konsentrasi.</span></footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
