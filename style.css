@@ -62,14 +62,16 @@ h1, h2, p { margin-top: 0; }
 .add-panel, .history-panel { margin-top: 20px; padding: 22px 25px; }
 .add-panel h2, .history-panel h2 { font-size: 18px; }
 .subtle-note { color: #91a19b; font-size: 11px; }
-.quick-add-grid { display: grid; grid-template-columns: 1fr 1fr 1.05fr; gap: 11px; }
+.quick-add-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
 .quick-add { display: flex; min-height: 99px; flex-direction: column; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: #fbfdfc; color: var(--ink); text-align: left; transition: transform .15s ease, border-color .15s ease, background .15s ease; }
 .quick-add:hover, .quick-add:focus-visible { transform: translateY(-2px); border-color: #86cbb0; background: #f1faf5; outline: none; }
+.quick-size { min-height: 52px; align-items: center; justify-content: center; padding: 8px; text-align: center; }
+.quick-size .quick-volume { font-size: 15px; }
 .quick-icon { display: grid; place-items: center; width: 25px; height: 25px; margin-bottom: 5px; border-radius: 6px; background: var(--mint); color: var(--green); }
 .quick-volume { font-size: 17px; font-weight: 800; }
 .quick-volume small { color: var(--muted); font-size: 11px; font-weight: 600; }
 .quick-caption { color: var(--muted); font-size: 10px; }
-.custom-add { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.custom-add { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(120px, 220px); align-items: center; justify-content: start; gap: 10px; }
 .custom-add label { color: #536c64; font-size: 11px; font-weight: 700; }
 .custom-add .form-control { min-width: 0; border-color: var(--line); font-size: 12px; }
 .add-button { border-color: var(--green); background: var(--green); color: white; }
@@ -100,7 +102,8 @@ h1, h2, p { margin-top: 0; }
 .reminder-panel h2 { margin: 5px 0 7px; font-size: 21px; }
 .reminder-description { margin-bottom: 20px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .interval-label { margin-bottom: 7px; color: #536c64; font-size: 11px; font-weight: 700; }
-.reminder-panel .form-select { min-height: 41px; border-color: var(--line); color: var(--ink); font-size: 13px; }
+.reminder-panel .form-control, .reminder-panel .input-group-text { min-height: 41px; border-color: var(--line); color: var(--ink); font-size: 13px; }
+.reminder-panel .input-group-text { background: #f7faf8; }
 .reminder-button { width: 100%; min-height: 43px; margin-top: 12px; border: 0; border-radius: 5px; background: var(--green); color: white; font-size: 12px; font-weight: 700; }
 .reminder-button:hover, .reminder-button:focus { background: var(--green-dark); color: white; }
 .reminder-button.is-active { border: 1px solid #dbe9e2; background: white; color: var(--green-dark); }
@@ -126,8 +129,8 @@ h1, h2, p { margin-top: 0; }
   .progress-percent { font-size: 17px; }
   .progress-foot { font-size: 10px; }
   .add-panel, .history-panel { padding: 19px 17px; }
-  .quick-add-grid { grid-template-columns: 1fr 1fr; }
-  .custom-add { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 3px; }
+  .quick-add-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .custom-add { grid-template-columns: 1fr 1fr; padding-top: 3px; }
   .custom-add label { margin: 0; }
   .date-chip { font-size: 11px; }
   .app-footer { font-size: 9px; }

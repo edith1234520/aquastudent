@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
 </head>
+
 <body>
   <div class="app-shell">
     <nav class="navbar app-nav" aria-label="Navigasi utama">
@@ -45,15 +47,18 @@
               <div class="goal-copy">dari target <strong id="targetLabel">2.000 ml</strong></div>
               <div class="progress-percent" id="progressPercent">0%</div>
             </div>
-            <div class="progress-track" role="progressbar" aria-label="Progres target minum" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+            <div class="progress-track" role="progressbar" aria-label="Progres target minum" aria-valuemin="0"
+              aria-valuemax="100" aria-valuenow="0" id="progressTrack">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-foot"><span id="progressMessage">Ayo mulai dengan satu gelas.</span><span><strong id="remainingAmount">2.000</strong> ml lagi</span></div>
+            <div class="progress-foot"><span id="progressMessage">Ayo mulai dengan satu gelas.</span><span><strong
+                  id="remainingAmount">2.000</strong> ml lagi</span></div>
 
             <div class="target-row">
               <label for="targetInput"><i class="bi bi-bullseye" aria-hidden="true"></i> Target harian</label>
               <div class="input-group target-input-group">
-                <input class="form-control" id="targetInput" type="number" min="250" max="10000" step="50" value="2000" aria-label="Target minum harian dalam mililiter">
+                <input class="form-control" id="targetInput" type="number" min="250" max="10000" step="50" value="2000"
+                  aria-label="Target minum harian dalam mililiter">
                 <span class="input-group-text">ml</span>
               </div>
             </div>
@@ -63,20 +68,46 @@
             <div class="section-kicker">TAMBAH MINUM</div>
             <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
               <h2>Baru saja minum?</h2>
-              <span class="subtle-note">Pilih ukuran gelasmu</span>
+              <span class="subtle-note">Pilih ukuran botol atau masukkan jumlah lain</span>
             </div>
             <div class="quick-add-grid">
-              <button class="quick-add" type="button" data-amount="250" aria-label="Tambah 250 mililiter">
-                <span class="quick-icon"><i class="bi bi-cup" aria-hidden="true"></i></span><span class="quick-volume">+250 <small>ml</small></span><span class="quick-caption">1 gelas</span>
+              <button class="quick-add quick-size" type="button" data-amount="100" aria-label="Tambah 100 mililiter">
+                <span class="quick-volume">+100 <small>ml</small></span>
               </button>
-              <button class="quick-add" type="button" data-amount="500" aria-label="Tambah 500 mililiter">
-                <span class="quick-icon"><i class="bi bi-cup-straw" aria-hidden="true"></i></span><span class="quick-volume">+500 <small>ml</small></span><span class="quick-caption">1 botol kecil</span>
+              <button class="quick-add quick-size" type="button" data-amount="200" aria-label="Tambah 200 mililiter">
+                <span class="quick-volume">+200 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="300" aria-label="Tambah 300 mililiter">
+                <span class="quick-volume">+300 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="400" aria-label="Tambah 400 mililiter">
+                <span class="quick-volume">+400 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="500" aria-label="Tambah 500 mililiter">
+                <span class="quick-volume">+500 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="600" aria-label="Tambah 600 mililiter">
+                <span class="quick-volume">+600 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="700" aria-label="Tambah 700 mililiter">
+                <span class="quick-volume">+700 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="800" aria-label="Tambah 800 mililiter">
+                <span class="quick-volume">+800 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="900" aria-label="Tambah 900 mililiter">
+                <span class="quick-volume">+900 <small>ml</small></span>
+              </button>
+              <button class="quick-add quick-size" type="button" data-amount="1000" aria-label="Tambah 1.000 mililiter">
+                <span class="quick-volume">+1.000 <small>ml</small></span>
               </button>
               <form class="custom-add" id="customAddForm">
                 <label for="customAmount">Ukuran lain</label>
                 <div class="input-group">
-                  <input class="form-control" id="customAmount" type="number" min="1" max="5000" step="1" placeholder="ml" inputmode="numeric" required aria-label="Jumlah minum dalam mililiter">
-                  <button class="btn add-button" type="submit" aria-label="Tambahkan jumlah minum"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
+                  <input class="form-control" id="customAmount" type="number" min="1" max="5000" step="1"
+                    placeholder="ml" inputmode="numeric" required aria-label="Jumlah minum dalam mililiter">
+                  <button class="btn add-button" type="submit" aria-label="Tambahkan jumlah minum"><i
+                      class="bi bi-plus-lg" aria-hidden="true"></i></button>
                 </div>
               </form>
             </div>
@@ -84,7 +115,10 @@
 
           <div class="panel history-panel">
             <div class="panel-heading history-heading">
-              <div><div class="section-kicker">CATATAN HARI INI</div><h2>Riwayat minum</h2></div>
+              <div>
+                <div class="section-kicker">CATATAN HARI INI</div>
+                <h2>Riwayat minum</h2>
+              </div>
               <span class="entry-count" id="entryCount">0 catatan</span>
             </div>
             <ul class="history-list" id="historyList" aria-live="polite"></ul>
@@ -93,33 +127,41 @@
               <p>Belum ada catatan. Minum dulu, lalu tambahkan di sini.</p>
             </div>
             <div class="history-actions" id="historyActions" hidden>
-              <button class="text-button" id="resetButton" type="button"><i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i> Reset progres hari ini</button>
+              <button class="text-button" id="resetButton" type="button"><i class="bi bi-arrow-counterclockwise"
+                  aria-hidden="true"></i> Reset progres hari ini</button>
             </div>
           </div>
         </section>
 
         <aside class="col-lg-4" aria-label="Pengaturan pengingat">
           <div class="panel reminder-panel">
-            <div class="reminder-topline"><span class="reminder-icon"><i class="bi bi-bell" aria-hidden="true"></i></span><span class="reminder-status" id="reminderBadge">NONAKTIF</span></div>
+            <div class="reminder-topline"><span class="reminder-icon"><i class="bi bi-bell"
+                  aria-hidden="true"></i></span><span class="reminder-status" id="reminderBadge">NONAKTIF</span></div>
             <div class="section-kicker">BIAR TIDAK TERLEWAT</div>
             <h2>Pengingat minum</h2>
-            <p class="reminder-description">Atur jeda pengingat supaya kamu ingat minum di sela kuliah dan tugas.</p>
+            <p class="reminder-description">Atur jeda pengingat dalam menit, misalnya 2 atau 10 menit.</p>
 
             <label class="form-label interval-label" for="reminderInterval">Ingatkan setiap</label>
-            <select class="form-select" id="reminderInterval">
-              <option value="60">1 jam</option>
-              <option value="120">2 jam</option>
-              <option value="30">30 menit</option>
-            </select>
+            <div class="input-group interval-input-group">
+              <input class="form-control" id="reminderInterval" type="number" min="1" step="1" value="60"
+                inputmode="numeric" required aria-label="Interval pengingat dalam menit">
+              <span class="input-group-text">menit</span>
+            </div>
 
-            <button class="btn reminder-button" id="reminderToggle" type="button"><i class="bi bi-bell-fill" aria-hidden="true"></i> Aktifkan pengingat</button>
-            <p class="reminder-feedback" id="reminderFeedback" role="status" aria-live="polite">Notifikasi hanya muncul saat halaman ini terbuka.</p>
-            <div class="permission-note"><i class="bi bi-shield-check" aria-hidden="true"></i><span>Izin notifikasi browser diperlukan agar pengingat dapat muncul.</span></div>
+            <button class="btn reminder-button" id="reminderToggle" type="button"><i class="bi bi-bell-fill"
+                aria-hidden="true"></i> Aktifkan pengingat</button>
+            <p class="reminder-feedback" id="reminderFeedback" role="status" aria-live="polite">Notifikasi hanya muncul
+              saat halaman ini terbuka.</p>
+            <div class="permission-note"><i class="bi bi-shield-check" aria-hidden="true"></i><span>Izin notifikasi
+                browser diperlukan agar pengingat dapat muncul.</span></div>
           </div>
 
           <div class="tip-panel">
             <span class="tip-mark" aria-hidden="true">A</span>
-            <div><div class="section-kicker">CATATAN KECIL</div><p>Taruh botol minum di meja belajar agar lebih mudah ingat untuk minum.</p></div>
+            <div>
+              <div class="section-kicker">CATATAN KECIL</div>
+              <p>Taruh botol minum di meja belajar agar lebih mudah ingat untuk minum.</p>
+            </div>
           </div>
         </aside>
       </div>
@@ -128,4 +170,5 @@
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>

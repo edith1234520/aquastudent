@@ -15,9 +15,9 @@ AquaStudent/
 ## Fitur
 
 - Progres harian dengan target awal 2.000 ml. Target dapat diubah antara 250 dan 10.000 ml.
-- Tombol tambah cepat untuk 250 ml dan 500 ml, serta input jumlah khusus.
+- Tombol tambah cepat ukuran botol dari 100 ml sampai 1.000 ml dengan kelipatan 100 ml, serta input jumlah khusus.
 - Riwayat jumlah dan waktu minum. Catatan dapat dihapus satu per satu atau direset sekaligus.
-- Pengingat browser dengan pilihan interval 30 menit, 1 jam, atau 2 jam.
+- Pengingat browser dengan interval kustom dalam menit.
 - Progres dan pengaturan tersimpan di `localStorage` browser. Riwayat otomatis dimulai ulang pada tanggal berikutnya.
 - Tata letak responsif untuk layar ponsel dan desktop.
 

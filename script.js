@@ -1,7 +1,11 @@
 (() => {
   const STORAGE_KEY = "aquastudent.daily.v1";
   const DEFAULT_TARGET = 2000;
+  const MAX_DATE_MILLISECONDS = 8_640_000_000_000_000;
   const numberFormat = new Intl.NumberFormat("id-ID");
+  const isValidReminderInterval = (minutes) => Number.isSafeInteger(minutes)
+    && minutes > 0
+    && minutes <= Math.floor((MAX_DATE_MILLISECONDS - Date.now()) / 60_000);
   const elements = {
     todayLabel: document.querySelector("#todayLabel"),
     totalAmount: document.querySelector("#totalAmount"),
@@ -51,7 +55,7 @@
         : [];
       if (saved.reminder && typeof saved.reminder === "object") {
         state.reminder.enabled = saved.reminder.enabled === true;
-        state.reminder.intervalMinutes = [30, 60, 120].includes(saved.reminder.intervalMinutes)
+        state.reminder.intervalMinutes = isValidReminderInterval(saved.reminder.intervalMinutes)
           ? saved.reminder.intervalMinutes
           : 60;
         state.reminder.nextAt = Number.isFinite(saved.reminder.nextAt) ? saved.reminder.nextAt : null;
@@ -138,6 +142,13 @@
     }
   };
 
+  const isNotificationSupported = () => "Notification" in window;
+  const isSecureReminderContext = () => {
+    const protocol = window.location.protocol;
+    const host = window.location.hostname;
+    return window.isSecureContext || protocol === "https:" || host === "localhost" || host === "127.0.0.1";
+  };
+
   const renderReminder = () => {
     const enabled = state.reminder.enabled;
     elements.reminderBadge.textContent = enabled ? "AKTIF" : "NONAKTIF";
@@ -213,7 +224,20 @@
   });
 
   elements.reminderInterval.addEventListener("change", () => {
-    state.reminder.intervalMinutes = Number(elements.reminderInterval.value);
+    const intervalMinutes = elements.reminderInterval.valueAsNumber;
+    if (!elements.reminderInterval.checkValidity()) {
+      elements.reminderInterval.reportValidity();
+      elements.reminderInterval.value = String(state.reminder.intervalMinutes);
+      return;
+    }
+    if (!isValidReminderInterval(intervalMinutes)) {
+      elements.reminderInterval.setCustomValidity("Masukkan interval menit yang lebih kecil.");
+      elements.reminderInterval.reportValidity();
+      elements.reminderInterval.setCustomValidity("");
+      elements.reminderInterval.value = String(state.reminder.intervalMinutes);
+      return;
+    }
+    state.reminder.intervalMinutes = intervalMinutes;
     if (state.reminder.enabled) state.reminder.nextAt = Date.now() + state.reminder.intervalMinutes * 60_000;
     saveState();
     renderReminder();
@@ -229,10 +253,21 @@
       return;
     }
 
-    if (!("Notification" in window)) {
+    if (!isNotificationSupported()) {
       elements.reminderFeedback.textContent = "Browser ini belum mendukung notifikasi. Coba Chrome, Edge, atau Firefox terbaru.";
       return;
     }
+
+    if (window.location.protocol === "file:") {
+      elements.reminderFeedback.textContent = "Pengingat notifikasi tidak bisa berjalan saat halaman dibuka dari file://. Buka project lewat localhost atau HTTPS, lalu izinkan notifikasi di browser.";
+      return;
+    }
+
+    if (!isSecureReminderContext()) {
+      elements.reminderFeedback.textContent = "Pengingat notifikasi hanya bisa bekerja saat halaman dibuka lewat localhost/https. Jalankan project dengan server lokal seperti: python -m http.server 8000";
+      return;
+    }
+
     let permission = Notification.permission;
     if (permission === "default") permission = await Notification.requestPermission();
     if (permission !== "granted") {
