@@ -2,11 +2,11 @@
   const STORAGE_KEY = "aquastudent.daily.v1";
   const DEFAULT_TARGET = 2000;
   const MAX_DATE_MILLISECONDS = 8_640_000_000_000_000;
+  const REMINDER_SPOKEN_MESSAGE = "Ayo ngombe, ngombe, ngombe, ngombe, ngombe.";
   const numberFormat = new Intl.NumberFormat("id-ID");
   const isValidReminderInterval = (minutes) => Number.isSafeInteger(minutes)
     && minutes > 0
     && minutes <= Math.floor((MAX_DATE_MILLISECONDS - Date.now()) / 60_000);
-  let reminderAudioContext = null;
   const elements = {
     todayLabel: document.querySelector("#todayLabel"),
     totalAmount: document.querySelector("#totalAmount"),
@@ -144,28 +144,17 @@
   };
 
   const isNotificationSupported = () => "Notification" in window;
-  const resumeReminderAudio = () => {
-    if (!window.AudioContext) {
-      throw new Error("Browser ini belum mendukung suara pengingat.");
-    }
-    if (!reminderAudioContext) reminderAudioContext = new window.AudioContext();
-    return reminderAudioContext.resume();
-  };
-  const playReminderSound = () => {
-    if (!reminderAudioContext || reminderAudioContext.state !== "running") return false;
-    const startAt = reminderAudioContext.currentTime;
-    const oscillator = reminderAudioContext.createOscillator();
-    const volume = reminderAudioContext.createGain();
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(880, startAt);
-    oscillator.frequency.setValueAtTime(660, startAt + 0.14);
-    volume.gain.setValueAtTime(0.0001, startAt);
-    volume.gain.exponentialRampToValueAtTime(0.12, startAt + 0.02);
-    volume.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.32);
-    oscillator.connect(volume);
-    volume.connect(reminderAudioContext.destination);
-    oscillator.start(startAt);
-    oscillator.stop(startAt + 0.33);
+  const speakReminder = () => {
+    if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) return false;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(REMINDER_SPOKEN_MESSAGE);
+    utterance.lang = "id-ID";
+    utterance.rate = 0.95;
+    utterance.pitch = 1.05;
+    utterance.onerror = () => {
+      elements.reminderFeedback.textContent = "Ucapan pengingat tidak bisa diputar. Periksa pengaturan suara browser.";
+    };
+    window.speechSynthesis.speak(utterance);
     return true;
   };
   const isSecureReminderContext = () => {
@@ -185,10 +174,7 @@
     elements.reminderInterval.value = String(state.reminder.intervalMinutes);
     if (enabled && state.reminder.nextAt) {
       const minutes = Math.max(1, Math.ceil((state.reminder.nextAt - Date.now()) / 60_000));
-      const soundHint = reminderAudioContext?.state === "running"
-        ? ""
-        : " Klik halaman untuk mengaktifkan suara.";
-      elements.reminderFeedback.textContent = `Pengingat berikutnya sekitar ${minutes} menit lagi. Biarkan halaman ini tetap terbuka.${soundHint}`;
+      elements.reminderFeedback.textContent = `Pengingat berikutnya sekitar ${minutes} menit lagi. Biarkan halaman ini tetap terbuka.`;
     } else if (!enabled && !elements.reminderFeedback.textContent.startsWith("Notifikasi")) {
       elements.reminderFeedback.textContent = "Notifikasi hanya muncul saat halaman ini terbuka.";
     }
@@ -209,19 +195,6 @@
 
   document.querySelectorAll(".quick-add").forEach((button) => {
     button.addEventListener("click", () => addWater(Number(button.dataset.amount)));
-  });
-
-  document.addEventListener("click", () => {
-    if (!state.reminder.enabled || reminderAudioContext?.state === "running") return;
-    try {
-      resumeReminderAudio().then(() => {
-        renderReminder();
-      }, () => {
-        elements.reminderFeedback.textContent = "Suara pengingat belum bisa diaktifkan oleh browser ini.";
-      });
-    } catch (error) {
-      elements.reminderFeedback.textContent = error.message;
-    }
   });
 
   elements.customAddForm.addEventListener("submit", (event) => {
@@ -309,14 +282,6 @@
       return;
     }
 
-    let audioReady;
-    try {
-      audioReady = resumeReminderAudio().then(() => true, () => false);
-    } catch (error) {
-      elements.reminderFeedback.textContent = error.message;
-      return;
-    }
-
     let permission = Notification.permission;
     if (permission === "default") permission = await Notification.requestPermission();
     if (permission !== "granted") {
@@ -325,13 +290,9 @@
         : "Izin notifikasi belum diberikan.";
       return;
     }
-    if (!await audioReady) {
-      elements.reminderFeedback.textContent = "Suara pengingat belum bisa diaktifkan oleh browser ini. Izinkan audio situs, lalu coba lagi.";
-      return;
-    }
     state.reminder.enabled = true;
     state.reminder.nextAt = Date.now() + state.reminder.intervalMinutes * 60_000;
-    elements.reminderFeedback.textContent = "Siap! Pengingat dengan suara berjalan selama halaman ini terbuka.";
+    elements.reminderFeedback.textContent = "Siap! Pengingat dengan ucapan berjalan selama halaman ini terbuka.";
     saveState();
     renderReminder();
   });
@@ -351,12 +312,12 @@
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification("Waktunya minum air", { body: "Istirahat sebentar dan minum segelas air, ya." });
     }
-    const soundPlayed = playReminderSound();
+    const speechStarted = speakReminder();
     state.reminder.nextAt = Date.now() + state.reminder.intervalMinutes * 60_000;
     saveState();
     renderReminder();
-    if (!soundPlayed) {
-      elements.reminderFeedback.textContent = "Notifikasi muncul, tetapi suara belum aktif. Klik halaman untuk mengaktifkannya.";
+    if (!speechStarted) {
+      elements.reminderFeedback.textContent = "Notifikasi muncul, tetapi browser ini tidak mendukung ucapan otomatis.";
     }
   };
 
